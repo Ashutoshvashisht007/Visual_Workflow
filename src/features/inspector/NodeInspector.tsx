@@ -74,7 +74,7 @@ export function NodeInspector() {
               <label className="text-sm font-medium">
                 <div className='w-full flex justify-between items-center'>
                   <span>Node Name</span>
-                  <Badge className={`${getStatusClasses(activeNode.data.status)} py-1 px-2`}>
+                  <Badge className={`${getStatusClasses(activeNode.data.status)} py-1 px-2 md:hidden`}>
                     {activeNode.data.status}
                   </Badge>
                 </div>
