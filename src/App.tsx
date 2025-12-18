@@ -6,7 +6,9 @@ import { Sidebar } from './components/layout/Sidebar';
 import { AppSelector } from './features/navigation/AppSelector';
 import { useAppStore } from './stores/useAppStore';
 import { Button } from './components/ui/button';
-import { X, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { MobileDrawer } from './components/layout/MobileDrawer';
+import { AnimatePresence, motion } from 'motion/react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,46 +48,36 @@ function AppContent() {
           )}
         </header>
 
-        {/* Main Canvas Area */}
-        <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex overflow-hidden relative">
           <div className="flex-1 relative">
             <GraphCanvas />
           </div>
 
-          {/* Right Panel / Inspector - Desktop */}
-          {selectedNodeId && (
-            <aside className="hidden md:block w-87.5 border-l border-border bg-card overflow-y-auto">
-              <NodeInspector />
-            </aside>
-          )}
-
-          {/* Right Panel / Inspector - Mobile Drawer */}
-          {isMobilePanelOpen && selectedNodeId && (
-            <div
-              className="md:hidden fixed inset-0 z-50 bg-black/50"
-              onClick={() => setMobilePanelOpen(false)}
-            >
-              <div
-                className="absolute right-0 top-0 h-full w-87.5 bg-card border-l border-border overflow-y-auto"
-                onClick={(e) => e.stopPropagation()}
+          <AnimatePresence>
+            {selectedNodeId && (
+              <motion.aside
+                className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 h-[90vh] w-87.5 border-l rounded-lg border-neutral-500 shadow-lg shadow-neutral-400 overflow-y-auto z-40"
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
               >
-                <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-card z-10">
-                  <h2 className="font-semibold">Node Inspector</h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {  
-                      setSelectedNode(null);
-                      setMobilePanelOpen(false);
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
                 <NodeInspector />
-              </div>
-            </div>
-          )}
+              </motion.aside>
+            )}
+          </AnimatePresence>
+
+
+          <MobileDrawer
+            open={isMobilePanelOpen && !!selectedNodeId}
+            title="Node Inspector"
+            onClose={() => {
+              setSelectedNode(null);
+              setMobilePanelOpen(false);
+            }}
+          >
+            <NodeInspector />
+          </MobileDrawer>
         </div>
       </div>
     </div>

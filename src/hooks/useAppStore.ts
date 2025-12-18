@@ -18,7 +18,7 @@ export const useAppStore = create<AppState>((set) => ({
     setSelectedApp: (id) => set({ selectedAppId: id }),
     setSelectedNode: (id) => set({
         selectedNodeId: id,
-        isMobilePanelOpen: !!id // Auto-open drawer on mobile when node selected
+        isMobilePanelOpen: !!id
     }),
     toggleMobilePanel: (isOpen) => set({ isMobilePanelOpen: isOpen }),
 }));

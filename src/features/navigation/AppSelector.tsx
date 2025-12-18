@@ -38,7 +38,7 @@ export function AppSelector() {
         </PopoverTrigger>
 
         <PopoverContent className="w-75 p-0 relative border-none" align="start">
-          <div className="p-3 absolute -left-0.5 top-2 w-60 z-99 bg-gray-800 rounded-lg space-y-4 border-gray-800 shadow-2xl">
+          <div className="p-3 absolute -left-0.5 top-2 w-60 z-99 bg-gray-800 rounded-lg space-y-4 border-gray-800 shadow-2xl shadow-neutral-600">
             <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">
               Application
             </h3>

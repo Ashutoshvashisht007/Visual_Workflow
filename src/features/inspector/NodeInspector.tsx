@@ -6,6 +6,7 @@ import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import type { AppNode } from '@/types';
+import { getStatusClasses } from '@/lib/utils';
 
 export function NodeInspector() {
   const { selectedNodeId, activeInspectorTab, setActiveInspectorTab } = useAppStore();
@@ -44,25 +45,14 @@ export function NodeInspector() {
     );
   };
 
-  const getStatusVariant = (status: string) => {
-    switch (status) {
-      case 'healthy':
-        return 'default';
-      case 'degraded':
-        return 'secondary';
-      case 'down':
-        return 'destructive';
-      default:
-        return 'default';
-    }
-  };
+
 
   return (
     <>
-      {activeNode && <div className="h-full flex flex-col">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="font-semibold">Node Inspector</h2>
-          <Badge variant={getStatusVariant(activeNode.data.status)}>
+      {activeNode && <div className="h-full flex flex-col bg-neutral-700">
+        <div className="hidden p-4 border-b md:flex justify-between items-center">
+          <h2 className="font-semibold text-white">Node Inspector</h2>
+          <Badge className={`${getStatusClasses(activeNode.data.status)} py-1 px-2`}>
             {activeNode.data.status}
           </Badge>
         </div>
@@ -74,22 +64,30 @@ export function NodeInspector() {
         >
           <div className="px-4 pt-4">
             <TabsList className="w-full">
-              <TabsTrigger value="config" className="flex-1">Configuration</TabsTrigger>
-              <TabsTrigger value="runtime" className="flex-1">Runtime</TabsTrigger>
+              <TabsTrigger value="config" className="flex-1 cursor-pointer">Configuration</TabsTrigger>
+              <TabsTrigger value="runtime" className="flex-1 cursor-pointer">Runtime</TabsTrigger>
             </TabsList>
           </div>
 
           <TabsContent value="config" className="p-4 space-y-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Node Name</label>
+            <div className="text-white">
+              <label className="text-sm font-medium">
+                <div className='w-full flex justify-between items-center'>
+                  <span>Node Name</span>
+                  <Badge className={`${getStatusClasses(activeNode.data.status)} py-1 px-2`}>
+                    {activeNode.data.status}
+                  </Badge>
+                </div>
+              </label>
               <Input
+              className='mt-2'
                 value={activeNode.data.label}
                 onChange={(e) => handleUpdate('label', e.target.value)}
               />
             </div>
 
             <div className="space-y-4">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center text-white">
                 <label className="text-sm font-medium">CPU Allocation (%)</label>
                 <Input
                   type="number"
@@ -113,24 +111,24 @@ export function NodeInspector() {
           </TabsContent>
 
           <TabsContent value="runtime" className="p-4 space-y-6">
-            <div className="space-y-2">
+            <div className="space-y-2 text-white">
               <label className="text-sm font-medium">Memory Usage</label>
-              <div className="text-sm text-muted-foreground">{activeNode.data.memory}</div>
+              <div className="text-sm text-gray-400">{activeNode.data.memory}</div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Disk Usage</label>
-              <div className="text-sm text-muted-foreground">{activeNode.data.disk}</div>
+              <label className="text-sm font-medium text-white">Disk Usage</label>
+              <div className="text-sm text-gray-400">{activeNode.data.disk}</div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Region</label>
-              <div className="text-sm text-muted-foreground">{activeNode.data.region}</div>
+              <label className="text-sm font-medium text-white">Region</label>
+              <div className="text-sm text-gray-400">{activeNode.data.region}</div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Cost per Hour</label>
-              <div className="text-sm text-muted-foreground">${activeNode.data.costPerHour.toFixed(2)}</div>
+              <label className="text-sm font-medium text-white">Cost per Hour</label>
+              <div className="text-sm text-gray-400">${activeNode.data.costPerHour.toFixed(2)}</div>
             </div>
           </TabsContent>
         </Tabs>

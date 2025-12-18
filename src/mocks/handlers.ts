@@ -172,13 +172,12 @@ export const handlers = [
     await delay(500); 
     const { appId } = params;
     
-    // Simulate random error (5% chance)
-    // if (Math.random() < 0.05) {
-    //   return HttpResponse.json(
-    //     { error: 'Failed to fetch graph data' },
-    //     { status: 500 }
-    //   );
-    // }
+    if (Math.random() < 0.05) {
+      return HttpResponse.json(
+        { error: 'Failed to fetch graph data' },
+        { status: 500 }
+      );
+    }
 
     const data = graphData[appId as string];
     
